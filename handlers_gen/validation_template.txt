@@ -1,0 +1,32 @@
+// string
+{{ define "string.min" }}
+if ok := MinLengthValidation({{ .Min.Value }}, utf8.RuneCountInString(p.{{ .Name }})); !ok {
+    return fmt.Errorf("{{ .ParamName }} len must be >= {{ .Min.Value }}")
+}
+{{ end }}
+{{ define "string.max" }}
+if ok := MaxLengthValidation({{ .Max.Value }}, utf8.RuneCountInString(p.{{ .Name }})); !ok {
+    return fmt.Errorf("{{ .ParamName }} len must be <= {{ .Max.Value }}")
+}
+{{ end }}
+{{ define "string.existence" }}
+if ok := IsOneOfTheStringOptions({{ .Enum.Value }}, p.{{ .Name }}); !ok {
+    return fmt.Errorf("{{ .ParamName }} must be one of [%s]", strings.Join({{ .Enum.Value }}, ", "))
+}
+{{ end }}
+
+{{ define "int.min" }}
+if ok := MinValueValidation({{ .Min.Value }}, p.{{ .Name }}); !ok {
+    return fmt.Errorf("{{ .ParamName }} must be >= {{ .Min.Value }}")
+}
+{{ end }}
+{{ define "int.max" }}
+if ok := MaxValueValidation({{ .Max.Value }}, p.{{ .Name }}); !ok {
+    return fmt.Errorf("{{ .ParamName }} must be <= {{ .Max.Value }}")
+}
+{{ end }}
+{{ define "int.existence" }}
+if ok := IsOneOfTheIntOptions({{ print .Enum.Value }}, p.{{ .Name }}); !ok {
+    return fmt.Errorf("{{ .ParamName }} must be one of [%s]", strings.Split({{ .Enum.Value }}, ", "))
+}
+{{ end }}
